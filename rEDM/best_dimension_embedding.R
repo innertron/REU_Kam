@@ -19,7 +19,7 @@ for (i in loop_seq)
   pred <- c(1, length(Ch1))
   
   #run and plot the simplex algorithm to get the best embedding dimension
-  simplex_output <- simplex(Ch1, lib, pred, E=1:32)
+  simplex_output <- simplex(Ch1, lib, pred, E=1:30)
   #par(mar = c(4, 4, 1, 1), mgp = c(2.5, 1, 0))
   #plot(simplex_output$E, simplex_output$rho, type = "l", xlab = "Embedding Dimension (E)", 
   #     ylab = "Forecast Skill (rho)")

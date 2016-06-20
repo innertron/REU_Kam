@@ -4,26 +4,28 @@ library(rEDM)
 #you need to import the neural_data.txt file by hand.
 
 
-len <- 1000
-loop_seq <- seq(1, length(neural_data$X1.Chan..1)-len, by=len)
-Ch1_Ch2_rho <- replicate(length(loop_seq), NA)
-Ch2_Ch1_rho <- replicate(length(loop_seq), NA)
-Ch1_Ch2_rho.sd <- replicate(length(loop_seq), NA)
-Ch2_Ch1_rho.sd <- replicate(length(loop_seq), NA)
+len <- 1000 #the length of each segment
+loop_seq <- seq(1, length(neural_data$X1.Chan..1)-len, by=len) #segments that separate the data
+Ch1_Ch2_rho <- replicate(length(loop_seq), NA) #empty list to contain the causality measure
+Ch2_Ch1_rho <- replicate(length(loop_seq), NA) #empty list to contain the caucality measure
+Ch1_Ch2_rho.sd <- replicate(length(loop_seq), NA) #empty list to contain the standard deviation of the causality measure
+Ch2_Ch1_rho.sd <- replicate(length(loop_seq), NA) #empty list to contain the standard deviation of the causality measure
 
 #get the first .2 seconds of the data
 for (i in loop_seq)
 {
   
+  #get the segment of the data from channel 1 and 2
   Ch1 <- neural_data$X1.Chan..1[i:(i+len)]
   Ch2 <- neural_data$X2.Chan..2[i:(i+len)]
   
+  #get the segment of the data from challen 1 and 2. used for different purpose
   nd <- neural_data[i:(i+len),]
   lib <- c(1, length(nd))
   pred <- c(1, length(nd))
   
   #run and plot the simplex algorithm to get the best embedding dimension
-  simplex_output <- simplex(Ch1, lib, pred, E=1:32)
+  simplex_output <- simplex(Ch1, lib, pred, E=1:30)
   #par(mar = c(4, 4, 1, 1), mgp = c(2.5, 1, 0))
   #plot(simplex_output$E, simplex_output$rho, type = "l", xlab = "Embedding Dimension (E)", 
   #     ylab = "Forecast Skill (rho)")
@@ -36,7 +38,7 @@ for (i in loop_seq)
   
   
   #run and plot the simplex algorithm to get the best embedding dimension
-  simplex_output <- simplex(Ch2, lib, pred, E=1:32)
+  simplex_output <- simplex(Ch2, lib, pred, E=1:30)
   #plot(simplex_output$E, simplex_output$rho, type = "l", xlab = "Embedding Dimension (E)", 
   #     ylab = "Forecast Skill (rho)")
   bestE <- which.max(simplex_output$rho)
@@ -54,11 +56,13 @@ for (i in loop_seq)
                                                                       tapply(rho, lib_size, sd)))
   
   
+  #record the ccm measure and the standard deviation in the output lists
   Ch1_Ch2_rho.sd[[(i/len)+1]] <- ch2_map_1_mean$sd.rho
   Ch1_Ch2_rho[[(i/len)+1]] <- ch2_map_1_mean$rho
   Ch2_Ch1_rho.sd[[(i/len)+1]] <- ch1_map_2_mean$sd.rho
   Ch2_Ch1_rho[[(i/len)+1]] <- ch1_map_2_mean$rho
   
+  #print progress
   print(paste("finished", i))
   #specify the filename and plotting size
 #   save_file <- "~/Desktop/SIP/Code/rEDM/plots/"
