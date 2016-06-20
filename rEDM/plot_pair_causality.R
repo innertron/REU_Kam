@@ -71,8 +71,8 @@ for (i in 1:30)
     lines(ch2_map_1_mean$lib_size, ch2_map_1_mean$rho - ch2_map_1_mean$sd.rho, col = "blue", 
           lty = 3, lwd = 1)
   
-    #turn the plotting device off to save the plot
+    #turn the plotting device off to save the plot and report progress
     dev.off ()
-    print(paste("plotted ",i, "and",j )
+    print(paste("plotted ",i, "and",j))
   }
 }
