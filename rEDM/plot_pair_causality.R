@@ -1,9 +1,12 @@
+#This script plots the causality measure for each pair of regions and saves
+#them to a folder
+
 #Import the rEDM library
 library(rEDM)
 
 #you need to import the neural_data.txt file by hand.
 
-#get the first .2 seconds of the data
+#get the first second of the data
 nd <- neural_data[1:1000,]
 lib <- c(1, length(nd))
 pred <- c(1, length(nd))
@@ -48,9 +51,9 @@ for (i in 1:30)
     
     
     #specify the filename and plotting size
-#     save_file <- "~/Desktop/SIP/Code/rEDM/plots/"
-#     file_name <- paste(save_file,i,"-and-",j,"-maps.jpg", sep="")
-#     png(file=file_name,width=600,height=525)
+    save_file <- "~/Desktop/SIP/Code/rEDM/plots/"
+    file_name <- paste(save_file,i,"-and-",j,"-maps.jpg", sep="")
+    png(file=file_name,width=600,height=525)
     
     
     #plot the results
@@ -72,7 +75,7 @@ for (i in 1:30)
           lty = 3, lwd = 1)
     
     #turn the plotting device off to save the plot and report progress
-    # dev.off ()
+    dev.off ()
     print(paste("plotted ",i, "and",j))
   }
 }

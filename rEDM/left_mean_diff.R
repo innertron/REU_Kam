@@ -1,3 +1,5 @@
+#calculates the left lag mean difference and returns it.
+#the span to check for lag is by default -30:30, and the step is 1.
 left_mean_diff <- function(i, j, span=30, by=1)
 {
   #Import the rEDM library
