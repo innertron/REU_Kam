@@ -1,3 +1,5 @@
+#This script will create a graph from 
+
 #Import the rEDM and igraph libraries
 library(rEDM)
 library(igraph)

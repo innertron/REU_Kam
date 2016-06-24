@@ -24,7 +24,7 @@ for (i in 1:30)
     
     #get the convergent cross map calculations
     Ch1_xmap_Ch2 <- ccm(nd, E = bestE, lib_column = i, first_column_time = TRUE,
-                        target_column = j, lib_sizes = seq(10, 80, by = 10))
+                        target_column = j, lib_sizes = seq(10, 80, by = 10), random_libs = FALSE)
     
     
     
@@ -38,7 +38,7 @@ for (i in 1:30)
     
     #get the ccm models 
     Ch2_xmap_Ch1 <- ccm(nd, E = bestE, lib_column = j, first_column_time = TRUE,
-                        target_column = i, lib_sizes = seq(10, 80, by = 10))
+                        target_column = i, lib_sizes = seq(10, 80, by = 10), random_libs=FALSE)
     
     #take the means of the ccm's and get the standard deviation
     ch1_map_2_mean <- data.frame(ccm_means(Ch1_xmap_Ch2), sd.rho = with(Ch1_xmap_Ch2,
@@ -48,9 +48,9 @@ for (i in 1:30)
     
     
     #specify the filename and plotting size
-    save_file <- "~/Desktop/SIP/Code/rEDM/plots/"
-    file_name <- paste(save_file,i,"-and-",j,"-maps.jpg", sep="")
-    png(file=file_name,width=600,height=525)
+#     save_file <- "~/Desktop/SIP/Code/rEDM/plots/"
+#     file_name <- paste(save_file,i,"-and-",j,"-maps.jpg", sep="")
+#     png(file=file_name,width=600,height=525)
     
     
     #plot the results
@@ -72,7 +72,7 @@ for (i in 1:30)
           lty = 3, lwd = 1)
     
     #turn the plotting device off to save the plot and report progress
-    dev.off ()
+    # dev.off ()
     print(paste("plotted ",i, "and",j))
   }
 }
