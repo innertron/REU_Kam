@@ -2,7 +2,7 @@
 title: "Sugihara Causality Brain Region Analysis"
 author: "Kamal Kamalaldin"
 date: "June 24, 2016"
-output: html_document
+output: pdf_document
 ---
 ```{r setup, include=FALSE}
 # Use the following commands to set any document-wide R chunk options
@@ -78,6 +78,8 @@ For now, we offer two simple heuristic measures to obtain an initial graph.
 For each node $n_i$ in the node set $N = {n_1,n_2,n_3, \dots, n_{31}}$, we find the node $n_j$ such that the convergent cross mapping skill from $n_i$ to $n_j$, $\rho_{i,j}$, is the maximum, and LLMD is positive, and we create an directed edge from $n_j$ to $n_i$ with weight $\rho_{i,j}$. Another constraint is that $n_i \neq n_j$. This translates to finding for each node the node that causes it the most, and forming an edge with the causation strength from it.
 
 This produces the graph below
+
+
 ![](rEDM/network plots/one_edge_max_caused_by_direction.jpeg)
 ![](rEDM/network plots/one_edge_max_caused_by_direction_grid.jpeg)
 

@@ -36,8 +36,9 @@ for (i in 1:31)
   if (!is.na(best_o))
   {
     print(paste("max for ",i," is ", edge_list$from[best_o]))
-    graph_from <- c(graph_from, edge_list$from[best_o])
-    graph_to <- c(graph_to, i)
+    #since channel 1 is missing, offset all connections by 1
+    graph_from <- c(graph_from, edge_list$from[best_o]+1)
+    graph_to <- c(graph_to, i+1)
     graph_strength <- c(graph_strength, best_rho)
   }
 }

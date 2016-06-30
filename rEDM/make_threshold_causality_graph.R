@@ -1,5 +1,5 @@
 #The script calculate_pair_causality.R needs to be run first to create the newt data frame
-
+library(igraph)
 #set the threshold
 threshold <- 0.8
 #Create empty lists to hold data
@@ -19,8 +19,8 @@ for (i in 1:31)
   {
     if (edge_list$strength[j] > threshold & edge_list$left_mean[j] > 0)
     {
-      graph_from <- c(graph_from, edge_list$from[j])
-      graph_to <- c(graph_to, i)
+      graph_from <- c(graph_from, edge_list$from[j]+1)
+      graph_to <- c(graph_to, i+1)
       graph_strength <- c(graph_strength, edge_list$strength[j])
     }
   }
