@@ -7,7 +7,7 @@ library(igraph)
 
 #you need to import the neural_data.txt file by hand.
 
-time_span = 1:1000
+time_span = 1:10000
 #get the first second of the data
 nd <- neural_data[time_span,]
 lib <- c(1, length(nd))
@@ -34,11 +34,11 @@ for (i in 1:30)
     
     #get the convergent cross map calculations
     Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = TRUE,
-                        target_column = i, lib_sizes = 80)
+                        target_column = i, lib_sizes = 80, num_samples = 20)
     
     #take the means of the ccm's and get the standard deviation
     ch2_map_1_mean <- data.frame(ccm_means(Ch2_xmap_Ch1), sd.rho = with(Ch2_xmap_Ch1,
-                                                                        tapply(rho, lib_size, sd)))
+                       tapply(rho, lib_size, sd)))
     
     Ch2 <- nd[,j]
     #run and plot the simplex algorithm to get the best embedding dimension
@@ -47,11 +47,11 @@ for (i in 1:30)
     
     #get the convergent cross map calculations
     Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = TRUE,
-                        target_column = j, lib_sizes = 80)
+                        target_column = j, lib_sizes = 80, num_samples = 20)
     
     #take the means of the ccm's and get the standard deviation
     ch1_map_2_mean <- data.frame(ccm_means(Ch1_xmap_Ch2), sd.rho = with(Ch1_xmap_Ch2,
-                                                                        tapply(rho, lib_size, sd)))
+                        tapply(rho, lib_size, sd)))
     
     
     #calculate the left mean difference for the causality

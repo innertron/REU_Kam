@@ -87,3 +87,20 @@ This produces the graph below
 
 ![](rEDM/network plots/threshold_.8.jpeg)
 ![](rEDM/network plots/threshold_.8_grid.jpeg)
+
+# Time Requirement
+
+We noticed as we ran the cross mapping algoirthm on the time series that the time requirement was too large, especially when attempting to get the convergence factor, since we need to run the algoirthm for multiple library sizes to observe the behavior as library sizes grow. Moreover, we run the algoirthm for multiple lag periods to calculate the LLMD which increased the time complexity of our causality calculation. To allay this problem, we experimented with reducing the sampling size in the ccm algorithm.
+
+![](Simple plots/sample size does nto dramatically affect rho.jpeg)
+
+As can be seen from the figure above, the reduction of the sampling size does not have a dramatic effect on the variability of the $\rho$ values. Therefore, we decided to always run our ccm algorithm using 20 sample size instead of the default 100. 
+
+Furthermore, since we observe that majority of cross maps are convergent, we no longer calculate the progression of library sizes, and only take into account library size 80.
+
+#Significance Testing
+
+Since we removed the progression of library sizes from our model, we must use another method to quantify a significant cross map skill $\rho$. For this, we use what has been suggested by [Nes et al.](http://www.nature.com/nclimate/journal/v5/n5/full/nclimate2568.html) and carry a bootstrap transformation over the data using random shuffling or Fourier Phase Transform, and counting the causality measure to be significant if it is above the 95% of the bootstrap distribution. (An explanation of how to do this can be found at [the rEDM package vignette, Seasonal Surrogate Test](https://cran.r-project.org/web/packages/rEDM/vignettes/rEDM_tutorial.html) )
+
+
+

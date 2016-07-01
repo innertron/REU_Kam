@@ -19,9 +19,6 @@ for (i in 1:30)
     Ch1 <- nd[,i]
     #run and plot the simplex algorithm to get the best embedding dimension
     simplex_output <- simplex(Ch1, lib, pred, E=1:6)
-    #par(mar = c(4, 4, 1, 1), mgp = c(2.5, 1, 0))
-    #plot(simplex_output$E, simplex_output$rho, type = "l", xlab = "Embedding Dimension (E)", 
-    #     ylab = "Forecast Skill (rho)")
     bestE <- which.max(simplex_output$rho)
     
     
@@ -34,8 +31,6 @@ for (i in 1:30)
     Ch2 <- nd[,j]
     #run and plot the simplex algorithm to get the best embedding dimension
     simplex_output <- simplex(Ch2, lib, pred, E=1:6)
-    #plot(simplex_output$E, simplex_output$rho, type = "l", xlab = "Embedding Dimension (E)", 
-    #     ylab = "Forecast Skill (rho)")
     bestE <- which.max(simplex_output$rho)
     
     
@@ -61,8 +56,7 @@ for (i in 1:30)
          xlab = "Library Size", ylab = "Cross Map Skill (rho)", ylim = c(0,1), lwd=3,
          main=paste("Sugihara causality measure between channels ", i, "and", j, "\n during first second"))
     lines(ch2_map_1_mean$lib_size, pmax(0, ch2_map_1_mean$rho), col = "blue")
-    legend(x = "topleft", legend = c(paste("Ch",i,"xmap Ch",j), paste("Ch",j," xmap Ch",i)), col = c("red", 
-                                                                                                     "blue"), lwd = 3, inset = 0.02, cex = 0.8)
+    legend(x = "topleft", legend = c(paste("Ch",i,"xmap Ch",j), paste("Ch",j," xmap Ch",i)), col = col("red", "blue"), lwd = 3, inset = 0.02, cex = 0.8)
     
     # Add CI's
     lines(ch1_map_2_mean$lib_size, ch1_map_2_mean$rho + ch1_map_2_mean$sd.rho, col = "red", 

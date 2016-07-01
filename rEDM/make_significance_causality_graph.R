@@ -34,8 +34,8 @@ for(i in 1:31)
       #if the causality is significant, create an edge that represnts it
       if (p_val < alpha_value)
       {
-        from <- rbind(from, i)
-        to <- rbind(to, j)
+        from <- rbind(from, i+1)
+        to <- rbind(to, j+1)
         strength <- rbind(strength, ch1_cause_2_observed)
         print(paste("from ",i,"to",j,"=",ch1_cause_2_observed, "pval =", p_val))
       }
@@ -43,6 +43,7 @@ for(i in 1:31)
   }
 }
 
+#account for missing signal 1
 
 #combine the lists into a data frame
 filtered_netw <- data.frame(from=from, to=to, strength=strength)

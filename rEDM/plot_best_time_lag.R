@@ -2,11 +2,11 @@
 #and plots the data accordingly
 
 library(rEDM) #import the convergent cross mapping library
-experiment_span = 1:1000 #run the analysis only on the first second of the experiment
-time_lag_span <- seq(0, 100, by=5) #since each index represents a milli second, this is 0:100 ms span
+experiment_span = 1000:2000 #run the analysis only on the first second of the experiment
+time_lag_span <- seq(0, 500, by=50) #since each index represents a milli second, this is 0:100 ms span
 nd <- neural_data[experiment_span,] #select the experiment span
 
-plot(1, type="n", xlim=c(0, 100), ylim=c(0, 1), ylab="rho", xlab="Lag applied")
+plot(1, type="n", xlim=c(0, 400), ylim=c(0, 1), ylab="rho", xlab="Lag applied")
 
 lag_data <- c()
 
@@ -37,7 +37,7 @@ for(i in 1:30)
       
       #get the convergent cross map calculations
       Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = TRUE, tau=lag,
-        target_column = i, lib_sizes = 80)
+        target_column = i, lib_sizes = 80, num_samples = 20)
       
       #take the means of the ccm's and get the standard deviation
       ch2_map_1_mean <- data.frame(ccm_means(Ch2_xmap_Ch1), sd.rho = with(Ch2_xmap_Ch1,
@@ -47,7 +47,7 @@ for(i in 1:30)
       
       #get the convergent cross map calculations
       Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = TRUE, tau=lag,
-         target_column = j, lib_sizes = 80)
+         target_column = j, lib_sizes = 80, num_samples = 20)
       
       #take the means of the ccm's and get the standard deviation
       ch1_map_2_mean <- data.frame(ccm_means(Ch1_xmap_Ch2), sd.rho = with(Ch1_xmap_Ch2,
@@ -78,3 +78,4 @@ for(i in 1:30)
   }
 }
 
+dput(lag_data,"lag_data.RData")
