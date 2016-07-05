@@ -1,4 +1,6 @@
 #The script calculate_pair_causality.R needs to be run first to create the newt data frame
+setwd("/Users/rorylewis/Documents/96_Kamal/REU_Kam")
+netw <- dget("sugihara_network.RData")
 library(igraph)
 #set the threshold
 threshold <- 0.8
