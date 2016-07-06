@@ -11,7 +11,7 @@ plot(1, type="n", xlim=c(0, 400), ylim=c(0, 1), ylab="rho", xlab="Lag applied")
 lag_data <- c()
 
 #for each channel pair, calculate best skill
-for(i in 1:30)
+for(i in 2:31)
 {
   Ch1 <- nd[,i]
   #run the simplex algorithm to get the best embedding dimension
@@ -19,7 +19,7 @@ for(i in 1:30)
   bestE_i <- which.max(simplex_output$rho)
   
   i2 = i+1
-  for(j in i2:31)
+  for(j in i2:32)
   {
     lag_index <- c()
     from_i <- c()
@@ -36,7 +36,7 @@ for(i in 1:30)
       bestE_j <- which.max(simplex_output$rho)
       
       #get the convergent cross map calculations
-      Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = TRUE, tau=lag,
+      Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = FALSE, tau=lag,
         target_column = i, lib_sizes = 80, num_samples = 20)
       
       #take the means of the ccm's and get the standard deviation
@@ -46,7 +46,7 @@ for(i in 1:30)
       
       
       #get the convergent cross map calculations
-      Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = TRUE, tau=lag,
+      Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = FALSE, tau=lag,
          target_column = j, lib_sizes = 80, num_samples = 20)
       
       #take the means of the ccm's and get the standard deviation

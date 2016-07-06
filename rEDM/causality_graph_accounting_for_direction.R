@@ -10,7 +10,7 @@ graph_to <- c()
 graph_strength <- c()
 
 #for each region find the highest rho value with positive left_mean
-for (i in 1:31)
+for (i in 2:32)
 {
   #get the information for that region
   edge_list <- subset(netw, to==i)
@@ -37,8 +37,8 @@ for (i in 1:31)
   {
     print(paste("max for ",i," is ", edge_list$from[best_o]))
     #since channel 1 is missing, offset all connections by 1
-    graph_from <- c(graph_from, edge_list$from[best_o]+1)
-    graph_to <- c(graph_to, i+1)
+    graph_from <- c(graph_from, edge_list$from[best_o])
+    graph_to <- c(graph_to, i)
     graph_strength <- c(graph_strength, best_rho)
   }
 }

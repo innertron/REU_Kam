@@ -1,13 +1,12 @@
 #calculates the left lag mean difference and returns it.
 #the span to check for lag is by default -30:30, and the step is 1.
-left_mean_diff <- function(i, j, span=30, by=1, time_span=1:1000)
+left_mean_diff <- function(i, j, nd, span=30, by=1, time_span=1:1000)
 {
   #Import the rEDM library
   library(rEDM)
   
   #you need to import the neural_data.txt file by hand.
   #get the first .2 seconds of the data
-  nd <- neural_data[time_span,]
   lib <- c(1, length(nd))
   pred <- c(1, length(nd))
 
@@ -23,7 +22,7 @@ left_mean_diff <- function(i, j, span=30, by=1, time_span=1:1000)
     
     
     #get the convergent cross map calculations
-    Ch1_xmap_Ch2 <- ccm(nd, E = bestE, lib_column = i, first_column_time = TRUE, tp=tp,
+    Ch1_xmap_Ch2 <- ccm(nd, E = bestE, lib_column = i, first_column_time = FALSE, tp=tp,
                         target_column = j, lib_sizes = 80, num_samples = 20)
     
     Ch2 <- nd[,j]
@@ -32,7 +31,7 @@ left_mean_diff <- function(i, j, span=30, by=1, time_span=1:1000)
     bestE <- which.max(simplex_output$rho)
     
     #get the ccm models 
-    Ch2_xmap_Ch1 <- ccm(nd, E = bestE, lib_column = j, first_column_time = TRUE, tp=tp,
+    Ch2_xmap_Ch1 <- ccm(nd, E = bestE, lib_column = j, first_column_time = FALSE, tp=tp,
                         target_column = i, lib_sizes = 80, num_samples = 20)
     
     #take the means of the ccm's and get the standard deviation
@@ -48,7 +47,7 @@ left_mean_diff <- function(i, j, span=30, by=1, time_span=1:1000)
   
   save_file <- "~/Desktop/SIP/Code/rEDM/lag\ plots/"
   file_name <- paste(save_file,i,"-and-",j,"-laged.jpg", sep="")
-  # png(file=file_name,width=600,height=525)
+  png(file=file_name,width=600,height=525)
   
   plot(x=tp_span, y=output_1_map_2, col="red",
        main=paste("Causality measure over lagged predictions of channels \n",i, "and", j),

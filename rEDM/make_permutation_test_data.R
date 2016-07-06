@@ -8,8 +8,11 @@ library(scales)
 #you need to import the neural_data.txt file by hand.
 #neural_data <- dget(...) or press import above
 
-#get the first second of the data
-nd <- neural_data[1:1000,]
+#select the data and the time span of the experiment
+# time_span <- 1:10000
+# nd <- neural_data[time_span,]
+#select the splined data
+nd <- splined_data
 lib <- c(1, length(nd))
 pred <- c(1, length(nd))
 
@@ -17,7 +20,7 @@ pred <- c(1, length(nd))
 shuffle_method = "ebisuzaki"
 permutation_test_data <- data.frame(to=integer(), from=integer(), rho=double(), random_shuffle=double())
 
-for (i in 1:30)
+for (i in 2:31)
 {
   
   Ch1 <- nd[,i]
@@ -30,11 +33,11 @@ for (i in 1:30)
   bestE_i <- which.max(simplex_output$rho)
   
   i2 = i+1
-  for(j in i2:31)
+  for(j in i2:32)
   {
     #get the convergent cross map calculations
-    Ch1_xmap_Ch2 <- ccm(nd, E = bestE_i, lib_column = i, first_column_time = TRUE,
-            target_column = j, lib_sizes = seq(10, 80, by = 10), random_libs = TRUE, num_samples=20)
+    Ch1_xmap_Ch2 <- ccm(nd, E = bestE_i, lib_column = i, first_column_time = FALSE,
+            target_column = j, lib_sizes = 80, random_libs = TRUE, num_samples=20)
     
     
     Ch2 <- nd[,j]
@@ -45,8 +48,8 @@ for (i in 1:30)
     
     
     #get the ccm models 
-    Ch2_xmap_Ch1 <- ccm(nd, E = bestE_j, lib_column = j, first_column_time = TRUE,
-           target_column = i, lib_sizes = seq(10, 80, by = 10), random_libs=TRUE, num_samples=20)
+    Ch2_xmap_Ch1 <- ccm(nd, E = bestE_j, lib_column = j, first_column_time = FALSE,
+           target_column = i, lib_sizes = 80, random_libs=TRUE, num_samples=20)
     
     #take the means of the ccm's and get the standard deviation
     ch1_map_2_mean <- data.frame(ccm_means(Ch1_xmap_Ch2), sd.rho = with(Ch1_xmap_Ch2,
@@ -63,14 +66,15 @@ for (i in 1:30)
     #do the same for the hundred surrogates
     for (sur_ind in 1:length(surr_ch1[1,]))
     {
+      
       sur_dat <- data.frame(Time=nd[,1], sur_1=surr_ch1[,sur_ind], sur_2=surr_ch2[,sur_ind])
       #get the convergent cross map calculations
       Ch1_xmap_Ch2 <- ccm(sur_dat, E = bestE_i, lib_column = 1, first_column_time = TRUE,
-       target_column = 2, lib_sizes = seq(10, 80, by = 10), random_libs=TRUE, num_samples=20)
+       target_column = 2, lib_sizes = 80, random_libs=TRUE, num_samples=20)
       
       #get the ccm models 
       Ch2_xmap_Ch1 <- ccm(sur_dat, E = bestE_j, lib_column = 2, first_column_time = TRUE,
-        target_column = 1, lib_sizes = seq(10, 80, by = 10), random_libs=TRUE, num_samples=20)
+        target_column = 1, lib_sizes = 80, random_libs=TRUE, num_samples=20)
       
       #take the means of the ccm's and get the standard deviation
       ch1_map_2_mean <- data.frame(ccm_means(Ch1_xmap_Ch2), sd.rho = with(Ch1_xmap_Ch2,
@@ -89,4 +93,4 @@ for (i in 1:30)
   }
 }
 
-dput(permutation_test_data, "permutation_test_data.RData")
+dput(permutation_test_data, "permutation_test_data_spline_first_second.RData")

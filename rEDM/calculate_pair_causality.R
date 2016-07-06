@@ -7,18 +7,22 @@ library(igraph)
 
 #you need to import the neural_data.txt file by hand.
 
-time_span = 1:10000
+#choose what data to use and what is the time span
+time_span = 1:1000
 #get the first second of the data
-nd <- neural_data[time_span,]
+nd <- splined_data[time_span,]
+
+#setting up what to use for prediction and what for library
 lib <- c(1, length(nd))
 pred <- c(1, length(nd))
 
+#set empty lists to fill as the algorithm goes on
 from <- c()
 to <- c()
 left_mean <- c()
 strength <- c()
 
-for (i in 1:30)
+for (i in 2:31)
 {
   Ch1 <- nd[,i]
   #run and plot the simplex algorithm to get the best embedding dimension
@@ -29,11 +33,11 @@ for (i in 1:30)
   i2 = i+1
   #for all nodes other than the current one, look for the edge that
   #most causes this one (i) and form an edge from it to i.
-  for(j in i2:31)
+  for(j in i2:32)
   {
     
     #get the convergent cross map calculations
-    Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = TRUE,
+    Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = FALSE,
                         target_column = i, lib_sizes = 80, num_samples = 20)
     
     #take the means of the ccm's and get the standard deviation
@@ -46,7 +50,7 @@ for (i in 1:30)
     bestE_j <- which.max(simplex_output$rho)
     
     #get the convergent cross map calculations
-    Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = TRUE,
+    Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = FALSE,
                         target_column = j, lib_sizes = 80, num_samples = 20)
     
     #take the means of the ccm's and get the standard deviation
@@ -55,7 +59,7 @@ for (i in 1:30)
     
     
     #calculate the left mean difference for the causality
-    left_mean_diff_i_j <- left_mean_diff(i, j)
+    left_mean_diff_i_j <- left_mean_diff(i, j, nd=nd)
     #record the rho measure for this connection
     from <- rbind(from, i)
     to <- rbind(to, j)

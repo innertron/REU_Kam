@@ -18,7 +18,7 @@ to <- c()
 sample_size <- c()
 strength <- c()
 
-for (i in 1:30)
+for (i in 1:31)
 {
   Ch1 <- nd[,i]
   #run and plot the simplex algorithm to get the best embedding dimension
@@ -29,7 +29,7 @@ for (i in 1:30)
   i2 = i+1
   #for all nodes other than the current one, look for the edge that
   #most causes this one (i) and form an edge from it to i.
-  for(j in i2:31)
+  for(j in i2:32)
   {
     
     
@@ -44,27 +44,27 @@ for (i in 1:30)
     for (smp in sampleSizes)
     {
       #get the convergent cross map calculations
-      Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = TRUE,
+      Ch2_xmap_Ch1 <- ccm(nd, E = bestE_i, lib_column = j, first_column_time = FALSE,
       target_column = i, lib_sizes = 80, num_samples = smp)
       
       #take the means of the ccm's and get the standard deviation
       ch2_map_1_mean <- data.frame(ccm_means(Ch2_xmap_Ch1), sd.rho = with(Ch2_xmap_Ch1,
         tapply(rho, lib_size, sd)))
       #get the convergent cross map calculations
-      Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = TRUE,
+      Ch1_xmap_Ch2 <- ccm(nd, E = bestE_j, lib_column = i, first_column_time = FALSE,
         target_column = j, lib_sizes = 80, num_samples = smp)
       
       #take the means of the ccm's and get the standard deviation
       ch1_map_2_mean <- data.frame(ccm_means(Ch1_xmap_Ch2), sd.rho = with(Ch1_xmap_Ch2,
         tapply(rho, lib_size, sd)))
       
-      from <- rbind(from, i+1)
-      to <- rbind(to, j+1)
+      from <- rbind(from, i)
+      to <- rbind(to, j)
       strength <- rbind(strength, ch2_map_1_mean$rho)
       sample_size <- rbind(sample_size, smp)
       
-      from <- rbind(from, j+1)
-      to <- rbind(to, i+1)
+      from <- rbind(from, j)
+      to <- rbind(to, i)
       strength <- rbind(strength, ch1_map_2_mean$rho)
       sample_size <- rbind(sample_size, smp)
       print(paste("finished ",i,j,"with",smp))

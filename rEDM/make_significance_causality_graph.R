@@ -16,9 +16,9 @@ from <- c()
 strength <- c()
 
 #for each pair
-for(i in 1:31)
+for(i in 2:32)
 {  
-  for(j in 1:31)
+  for(j in 2:32)
   {
     if(i != j)
     {
@@ -34,8 +34,8 @@ for(i in 1:31)
       #if the causality is significant, create an edge that represnts it
       if (p_val < alpha_value)
       {
-        from <- rbind(from, i+1)
-        to <- rbind(to, j+1)
+        from <- rbind(from, i)
+        to <- rbind(to, j)
         strength <- rbind(strength, ch1_cause_2_observed)
         print(paste("from ",i,"to",j,"=",ch1_cause_2_observed, "pval =", p_val))
       }

@@ -6,9 +6,9 @@
 
 
 #for each pair
-for(i in 1:31)
+for(i in 2:32)
 {  
-  for(j in 1:31)
+  for(j in 2:32)
   {
     if(i != j)
     {
