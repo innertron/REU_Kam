@@ -1,4 +1,18 @@
 make_threshold_causality_graph <- function(newt, threshold=0.8, plt_main=paste("A network of rat brain regions constructed from linking \n each node to the one it is caused by above rho ", threshold))
+
+#The script calculate_pair_causality.R needs to be run first to create the newt data frame
+# setwd("/Users/rorylewis/Documents/96_Kamal/REU_Kam")
+netw <- dget("sugihara_network.RData")
+library(igraph)
+#set the threshold
+threshold <- 0.8
+#Create empty lists to hold data
+graph_from <- c()
+graph_to <- c()
+graph_strength <- c()
+
+#for each region find the highest rho value with positive left_mean
+for (i in 1:31)
 {
   #The script calculate_pair_causality.R needs to be run first to create the newt data frame
   library(igraph)
