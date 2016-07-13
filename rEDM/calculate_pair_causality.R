@@ -9,8 +9,8 @@ library(igraph)
 
 #choose what data to use and what is the time span
 time_span = 1:1000
-#get the first second of the data
-nd <- splined_data[time_span,]
+# select the data and the time span
+nd <- splined_data
 
 #setting up what to use for prediction and what for library
 lib <- c(1, length(nd))

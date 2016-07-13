@@ -8,7 +8,8 @@ output: pdf_document
 # Use the following commands to set any document-wide R chunk options
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
 # neural_data <- read.csv("neural_data.txt", sep="\t")
-netw <- dget("sugihara_network.RData")
+full_raw_netw_first_sec <- dget("full_sugihara_network_raw_data_first_second.RData")
+full_spline_netw_first_sec <- dget("full_sugihara_network_spline_data_first_second.RData")
 ```
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
@@ -21,7 +22,11 @@ Unless explicitly stated otherwise, the data analysis in this document pertain o
 First we measured pairwise Sugihara cross map skill ($\rho$) measure. Most of the pairs showed high causality measures as shown by the histogram.
 
 ```{r}
-hist(netw$strength, main="Distribution of cross map skill between region pairs \n during first second", xlab=expression(paste("cross map skill (", rho,")")))
+hist(full_raw_netw_first_sec$strength, main="Distribution of cross map skill using raw signal \n between region pairs during first second", xlab=expression(paste("cross map skill (", rho,")")), ylim=c(0,200))
+```
+
+```{r}
+hist(full_spline_netw_first_sec$strength, main="Distribution of cross map skill using spline signal \n between region pairs during first second", xlab=expression(paste("cross map skill (", rho,")")), ylim=c(0,200))
 ```
 
 Then we observe that many of the pairs have very similar $\rho$ measure between them. This indicates that if region $a$ causes region $b$, then it is likely that region $b$ also causes region $a$. And since there are many causal relationships in this network, then it can be deduced the majority of the regions cause one another.
@@ -36,13 +41,31 @@ for (i in 1:31)
     if (i != j)
     {
       #get the difference of causality between i -> j and i <- j
-      rho_diff <- c(rho_diff, netw$strength[netw$from==i & netw$to==j] -
-                        netw$strength[netw$from==j & netw$to==i])
+      rho_diff <- c(rho_diff, full_raw_netw_first_sec$strength[full_raw_netw_first_sec$from==i & full_raw_netw_first_sec$to==j] -
+                        full_raw_netw_first_sec$strength[full_raw_netw_first_sec$from==j & full_raw_netw_first_sec$to==i])
     }
   }
 }
-hist(rho_diff, main = expression(paste("Distribution of difference of ", rho, 
-                                       " between regions in each pair")),
+hist(rho_diff, xlim=c(-1,1), ylim=c(0,350), main = "",
+     xlab=expression(paste("Difference in ", rho, " between regions in each pair")))
+```
+
+```{r}
+#create an empty list to store the data
+rho_diff <- c()
+for (i in 1:31)
+{
+  for (j in 1:31)
+  {
+    if (i != j)
+    {
+      #get the difference of causality between i -> j and i <- j
+      rho_diff <- c(rho_diff, full_spline_netw_first_sec$strength[full_spline_netw_first_sec$from==i & full_spline_netw_first_sec$to==j] -
+                        full_spline_netw_first_sec$strength[full_spline_netw_first_sec$from==j & full_spline_netw_first_sec$to==i])
+    }
+  }
+}
+hist(rho_diff, xlim=c(-1,1), ylim=c(0,350), main = "",
      xlab=expression(paste("Difference in ", rho, " between regions in each pair")))
 ```
 

@@ -1,7 +1,7 @@
 #this script converts the neural data collected 
 library(eegkit)
 
-time_slice = 1:1000
+time_slice = 1:length(neural_data[,1])
 nknots = as.integer(length(time_slice)/10)
 
 splined_data <- lapply(2:32, function(i){

@@ -9,10 +9,10 @@ library(scales)
 #neural_data <- dget(...) or press import above
 
 #select the data and the time span of the experiment
-# time_span <- 1:10000
-# nd <- neural_data[time_span,]
+time_span <- 1:2000
+nd <- neural_data[time_span,]
 #select the splined data
-nd <- splined_data
+# nd <- splined_data
 lib <- c(1, length(nd))
 pred <- c(1, length(nd))
 
@@ -93,4 +93,4 @@ for (i in 2:31)
   }
 }
 
-dput(permutation_test_data, "permutation_test_data_spline_first_second.RData")
+# dput(permutation_test_data, "permutation_test_data_spline_first_second.RData")
