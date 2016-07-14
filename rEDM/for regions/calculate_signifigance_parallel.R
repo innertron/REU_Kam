@@ -6,6 +6,7 @@
 library(eegkit)
 library(rEDM)
 library(snow)
+library(parallel)
 
 #for each brain region pair
 combinations <- t(combn(2:7, 2))
@@ -55,7 +56,7 @@ calculate_pair_surrogate_causality <- function(i, j, surr.ind)
 }
 
 
-cl<-makeCluster(4 ,type="SOCK")
+cl<-makeCluster(detectCores(), type="SOCK")
 
 clusterExport(cl, c("nd", "surrogate.data", 'simplex', 'lib', 'pred', 'ccm', 'ccm_means'))
 
