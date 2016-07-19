@@ -11,6 +11,9 @@ library(parallel)
 #for each brain region pair
 combinations <- t(combn(2:7, 2))
 
+#double the combinations to account for both directions
+combinations <- (cbind(c(combinations[,1], combinations[,2]), c(combinations[,2], combinations[,1])))
+
 time.window <- 2000
 num.regions <- 6
 num.windows <- as.integer(length(regional_neural_data[,1])/time.window)
@@ -42,7 +45,7 @@ calculate_pair_surrogate_causality <- function(i, j, start.time, placeholder)
   end.time <- start.time+time.window
   sur.dat <- cbind(regional_neural_data[start.time:end.time,1],
     regional_neural_data[start.time:end.time,i],
-    make_surrogate_data(regional_neural_data[start.time:end.time,j], num_surr = 1))
+    make_surrogate_data(regional_neural_data[start.time:end.time,j], num_surr = 1, method ="ebisuzaki" ))
 
   Ch2 <- regional_neural_data[start.time:end.time, j]
 
@@ -53,24 +56,21 @@ calculate_pair_surrogate_causality <- function(i, j, start.time, placeholder)
     target_column = 2, lib_sizes = 80, random_libs=TRUE, num_samples=20)
   
   ch2_map_1_mean <- ccm_means(Ch2_xmap_Ch1)
-  
+  print(paste("finished", i, j, "for window", start.time))
   c(to=j, from=i, libs=ch2_map_1_mean$lib_size, random_shuffle=max(0, ch2_map_1_mean$rho), rho=NA,
     start.time=start.time, time.window=time.window)
 }
 
 
-cl<-makeCluster(detectCores(), type="SOCK")
+cl<-makeCluster(detectCores(), type="SOCK", outfile="")
 
 clusterExport(cl, c("regional_neural_data", 'simplex', 'ccm', 'ccm_means', 'time.window', 'make_surrogate_data'))
 
 
-start.times <- seq(0,length(regional_neural_data[,1]), by=time.window)
+start.times <- seq(0, by=time.window)
 
 #calculate observed causality going one way
-observed <- rbind(
-  t(as.data.frame(clusterMap(cl, calc_pair_causality, combinations[,1], combinations[,2], start.times))),
-  t(as.data.frame(clusterMap(cl, calc_pair_causality, combinations[,2], combinations[,1], start.times)))
-)
+observed <- t(as.data.frame(clusterMap(cl, calc_pair_causality, combinations[,2], combinations[,1], rep(start.times, length(combinations[,2])))))
 
 
 tick = proc.time()
@@ -78,7 +78,7 @@ permutation_data <- t(as.data.frame(clusterMap(cl,
  calculate_pair_surrogate_causality,
   combinations[,1],
    combinations[,2],
-    rep(start.times, 100*length(combinations[,2]))
+    rep(start.times, 20*length(combinations[,2]))
     )))
 tock = proc.time() - tick
 print(tock)
