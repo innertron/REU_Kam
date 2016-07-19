@@ -8,7 +8,7 @@ library(igraph)
 #dget("permutation_test_data")
 
 #define the alpha value for significance
-alpha_value <- 0.05
+alpha_value <- 0.2
 
 #create empty lists to add the node and edge relationsihps to 
 to <- c()
@@ -29,7 +29,7 @@ for(i in 2:7)
           !is.na(random_shuffle), drop=T, select = random_shuffle)
       
       #cauculate the P-value significance
-      p_val = sum((ch1_cause_2_observed < ch1_cause_2_permutation) + 1) / (length(ch1_cause_2_permutation) + 1)
+      p_val = (sum(ch1_cause_2_observed < ch1_cause_2_permutation) + 1) / (length(ch1_cause_2_permutation) + 1)
       
       #if the causality is significant, create an edge that represnts it
       if (p_val < alpha_value)
