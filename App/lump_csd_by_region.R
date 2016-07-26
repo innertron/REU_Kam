@@ -3,6 +3,7 @@
 #expectes a N x 4 x 8 array, where N is the number of data points collected and 4 x 8 is the
 #dimensions in regards to the spatial coordinates
 #time points is a matrix of time point indecies that will make the first column of the returned data frame
+#MUST RUN h5ReadIn.R FIRST
 melt_CSD <- function(CSD, time_points)
 {
   result <- time_points
@@ -48,6 +49,7 @@ lump_channels_by_region <- function(CSD)
              parietal.postdorsal = parietal.postdorsal, medial.parietal.assoc = medial.parietal.assoc,
              lateral.parietal.assoc = lateral.parietal.assoc, ss.disgranular = ss.disgranular, retrosplenial.disgran = retrosplenial.disgran)
 }
+
 
 CSD <- melt_CSD(EstCSD, neural_data[,1])
 regional_EstCSD <- lump_channels_by_region(CSD)

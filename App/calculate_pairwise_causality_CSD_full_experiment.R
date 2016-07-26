@@ -1,6 +1,6 @@
-#this script produces surrogate data and calculates the ccm measure for
-#each such surrogate data
-#must run lump_csd_by_region.R first
+#this script calculates pairwise causality between brain regions using the reconstructed CSD file then
+#stores the data in a folder.
+#MUST RUN lump_csd_by_region.R FIRST
 calculate_pairwise_causality_CSD_full_experiment <- function(time.window=2000, time.step=2000)
 {
   #import libraries
