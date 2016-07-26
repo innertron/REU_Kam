@@ -1,6 +1,9 @@
 library(shiny)
 library(igraph)
 
+#get the data
+pair.causality.CSD.data <- dget("pairwise.causality.regional.CSD.data.RData")
+
 ui <- fluidPage(
   
   #slider that controls the threshold to show
