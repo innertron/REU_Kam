@@ -1,4 +1,4 @@
-make_threshold_causality_graph <- function(netw, threshold=0.8, strt.tim=0, plt_main=paste("A network of rat brain regions constructed from linking \n each node to the one it is caused by above rho ", "\n at start time", strt.tim))
+make_causality_graphs <- function(netw, threshold=0, strt.tim=0, plt_main=paste("A network of rat brain regions constructed from linking \n each node to the one it is caused by above rho ", threshold, "\n at start time", strt.tim))
 {
   #The script calculate_pair_causality.R needs to be run first to create the netw data frame
   # setwd("/Users/rorylewis/Documents/96_Kamal/REU_Kam")
@@ -27,10 +27,10 @@ make_threshold_causality_graph <- function(netw, threshold=0.8, strt.tim=0, plt_
     l[10,] <- c(3,2) #medial parietal assoc
     l[11,] <- c(0.5, 3) #2nd motor
     l[12,] <- c(4, 3) #retrosplenial disgran
-    l[,1]  <- l[,1]*3
     
 
-    E(g)$color <- rbPal(100)[as.numeric(ceiling(edge.list$rho))]
+    
+    rbPal <- colorRampPalette(c('grey', 'yellow', 'green', 'blue','red'))
     save_file <- "~/Desktop/SIP/Code/rEDM/region\ threshold\ graphs/"
     file_name <- paste(save_file,strt.tim,"-threshold-graph.pdf", sep="")
     # pdf(file=file_name)
@@ -39,12 +39,15 @@ make_threshold_causality_graph <- function(netw, threshold=0.8, strt.tim=0, plt_
 #     l = layout.fruchterman.reingold(g)
 #     plot(g, edge.arrow.size=.3, vertex.size = 7, vertex.label.cex=.7, layout=l, main=plt_main)
     # dev.off()
+
   }
 }
 
+time.window <- 2000
+start.times <- seq(0, length(regional_EstCSD[,1]), by=time.window)
 for (i in start.times)
 {
-  make_threshold_causality_graph( threshold.data, strt.tim = i)  
+  make_causality_graphs( pair.causality.CSD.data, threshold = 0, strt.tim = i)  
 }
 
   
