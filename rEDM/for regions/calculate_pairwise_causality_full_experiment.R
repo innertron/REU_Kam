@@ -33,14 +33,16 @@ calculate_pairwise_causality_full_experiment <- function(time.window=2000)
     ch2_map_1_mean <- ccm_means(Ch2_xmap_Ch1)
     
     print(paste("finished", i, j, "for start time", start.time))
-    c(to=j, from=i, libs=ch2_map_1_mean$lib_size,random_shuffle=NA, rho=ch2_map_1_mean$rho,
+    c(to=j, from=i, libs=ch2_map_1_mean$lib_size,random_shuffle=NA, rho=max(0,ch2_map_1_mean$rho),
       start.time=start.time, time.window=time.window)
   }
   
   
   cl<-makeCluster(detectCores(), type="SOCK", outfile="")
   
-  clusterExport(cl, c("regional_neural_data", 'simplex', 'ccm', 'ccm_means', 'time.window', 'make_surrogate_data'))
+  
+  clusterExport(cl, c("time.window"), envir= environment())
+  clusterExport(cl, c("regional_neural_data", 'simplex', 'ccm', 'ccm_means', 'make_surrogate_data'))
   
   
   start.times <- seq(0, length(regional_neural_data[,1]), by=time.window)
@@ -49,10 +51,17 @@ calculate_pairwise_causality_full_experiment <- function(time.window=2000)
   tick = proc.time() #start timing
   
   #calculate observed causality
-  threshold.data <- t(as.data.frame(clusterMap(cl, calc_pair_causality, combinations[,2], combinations[,1], start.times.array)))
-  threshold.data <- data.frame(threshold.data)
+  pair.causality.data <- t(as.data.frame(clusterMap(cl, calc_pair_causality, combinations[,2], combinations[,1], start.times.array)))
+  pair.causality.data <- data.frame(pair.causality.data)
   
   tock = proc.time() - tick #stop timing
   print(tock)
   stopCluster(cl)
+  
+  #returned
+  pair.causality.data
 }
+
+pair.causality.data <- calculate_pairwise_causality_full_experiment(time.window = 2000)
+
+dput(pairwise.causality.data, "~/pairwise.causality.data.RData")

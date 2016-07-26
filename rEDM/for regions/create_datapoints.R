@@ -1,8 +1,9 @@
-
+library(parallel)
+# pairwise.causality.data <- dget("~/pairwise.causality.data.RData")
 getDataPoint <- function(strt.tim)
 {
-  froms <- unique(threshold.data$from)
-  tos <- unique(threshold.data$to)
+  froms <- unique(pairwise.causality.data$from)
+  tos <- unique(pairwise.causality.data$to)
   
   node.range <- range(froms)[1]:range(tos)[2]
   
@@ -11,7 +12,7 @@ getDataPoint <- function(strt.tim)
   {
     for (j in node.range[-i+1])
     {
-      rho <- unlist(subset(threshold.data, select=rho, from==i & to==j & start.time==strt.tim,
+      rho <- unlist(subset(pairwise.causality.data, select=rho, from==i & to==j & start.time==strt.tim,
         drop=T))
       d <- cbind(d, rho)
     }
@@ -21,7 +22,7 @@ getDataPoint <- function(strt.tim)
 }
 
 
-causality.graph.data <- t(mcmapply(getDataPoint, unique(threshold.data$start.time)))
+causality.graph.data <- t(mcmapply(getDataPoint, unique(pairwise.causality.data$start.time)))
 
 
 for (index in 1:length(causality.graph.data[,1]))
