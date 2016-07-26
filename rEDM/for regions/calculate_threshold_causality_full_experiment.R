@@ -36,7 +36,7 @@ calc_pair_causality <- function(i, j, start.time)
   ch2_map_1_mean <- ccm_means(Ch2_xmap_Ch1)
   
   print(paste("finished", i, j, "for start time", start.time))
-  c(to=j, from=i, libs=ch2_map_1_mean$lib_size,random_shuffle=NA, rho=ch2_map_1_mean$rho,
+  c(to=(j-1), from=(i-1), libs=ch2_map_1_mean$lib_size, random_shuffle=NA, rho=ch2_map_1_mean$rho,
     start.time=start.time, time.window=time.window)
 }
 
@@ -46,7 +46,7 @@ cl<-makeCluster(detectCores(), type="SOCK", outfile="")
 clusterExport(cl, c("regional_neural_data", 'simplex', 'ccm', 'ccm_means', 'time.window', 'make_surrogate_data'))
 
 
-start.times <- seq(0, length(regional_neural_data[,1]), by=time.window)
+start.times <- seq(0, 0, by=time.window)
 
 tick = proc.time() #start timing
 #calculate observed causality going one way

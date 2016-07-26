@@ -25,10 +25,10 @@ lump_channels_by_region <- function()
 
   retrosplenial.disgran <- rowMeans(rbind(neural_data[, c(27, 28, 29, 30, 31)]))
   
-  data.frame(Time = neural_data[,1], ss.forelimb = ss.forelimb, ss.trunk = ss.trunk, prim.vis = prim.vis,
-   prim.mot = prim.mot, ss.hindlimb = ss.hindlimb, second.vis = second.vis, second.mot = second.mot,
-   parietal.postdorsal = parietal.postdorsal, medial.parietal.assoc = medial.parietal.assoc,
-   lateral.parietal.assoc = lateral.parietal.assoc, ss.disgranular = ss.disgranular, retrosplenial.disgran = retrosplenial.disgran)
+  data.frame(Time = neural_data[,1], ss.forelimb = ss.forelimb, ss.disgranular = ss.disgranular, parietal.postdorsal = parietal.postdorsal, prim.vis = prim.vis,  ss.hindlimb = ss.hindlimb, ss.trunk = ss.trunk, 
+    lateral.parietal.assoc = lateral.parietal.assoc, second.vis = second.vis, prim.mot = prim.mot, 
+    medial.parietal.assoc = medial.parietal.assoc, second.mot = second.mot,
+   retrosplenial.disgran = retrosplenial.disgran)
 }
 
 regional_neural_data <- lump_channels_by_region()
