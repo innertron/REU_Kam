@@ -4,6 +4,9 @@ library(igraph)
 #get the data
 pair.causality.CSD.data <- dget("pairwise.causality.regional.CSD.data.RData")
 
+pair.causality.CSD.data$to <- pair.causality.CSD.data$to-1
+pair.causality.CSD.data$from <- pair.causality.CSD.data$from - 1
+
 ui <- fluidPage(
   
   #slider that controls the threshold to show
