@@ -2,11 +2,13 @@ library(shiny)
 library(igraph)
 
 #get the data
+setwd("~/Desktop/SIP/Code/App")
 pair.causality.CSD.data <- dget("pairwise.causality.regional.CSD.data.RData")
 
 pair.causality.CSD.data$to <- pair.causality.CSD.data$to-1
 pair.causality.CSD.data$from <- pair.causality.CSD.data$from - 1
 
+time.step <- unique(pair.causality.CSD.data$start.time)[2] - unique(pair.causality.CSD.data$start.time)[1]
 ui <- fluidPage(
   
   #slider that controls the threshold to show
@@ -15,7 +17,7 @@ ui <- fluidPage(
   #slider that controls which data frame to show
   sliderInput(inputId = "time", label="Choose a time segment",
     value = range(start.times)[1], min = range(start.times)[1], max = range(start.times)[2],
-    step=2000, animate=animationOptions(interval=250)),
+    step=time.step, animate=animationOptions(interval=250)),
   #the main pannel where the graph plot is
   mainPanel(plotOutput(outputId = "main.plot")),
   #a sidebar with descriptions of the nodes and their meanings

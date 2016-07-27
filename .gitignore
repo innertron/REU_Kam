@@ -3,3 +3,5 @@ CA/*
 .Rproj.user
 .RData
 .Rhistory
+.RDataTmp
+App/kamal_data3.h5
