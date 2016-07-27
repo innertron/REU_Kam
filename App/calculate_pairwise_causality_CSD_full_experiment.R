@@ -33,7 +33,6 @@ calculate_pairwise_causality_CSD_full_experiment <- function(time.window=2000, t
     #get the ccm model and its results then calculate their mean
     Ch2_xmap_Ch1 <- ccm(regional_EstCSD[start.time:end.time,], E = bestE_j, lib_column = j, first_column_time = TRUE,
                         target_column = i, lib_sizes = 80, random_libs=TRUE, num_samples=20)
-    
     ch2_map_1_mean <- ccm_means(Ch2_xmap_Ch1)
     
     #print status update

@@ -1,24 +1,37 @@
 
 The main package we will be using will be the [rEDM](https://cran.r-project.org/web/packages/rEDM/vignettes/rEDM_tutorial.html) package, which was developed by Sugihara's group. The mCCR package was used in the past, but will no loger be used. The code and data that we will be developing will be in the rEDM file for now.
 
-#Requirement
+#Requirements
+The following packages are required to completely run all scripts within this project:
 
-The rEDM package in R is required to run most of the analytics. It can be downloaded in Rstudio by the following commands
+-rEDM
+-igraph
+-rhdf5
+-shiny
+-parallel
+-snow
+-eegkit
+
+each of these packages can be installed by the following command
 
 ```
-library(devtools)
-install_github("ha0ye/rEDM")
+install.packages("PACKAGE_NAME")
+```
+with the esception of the rhdf5 package which must be installed by these commands.
+
+```
+source("https://bioconductor.org/biocLite.R")
+biocLite("rhdf5")
 ```
 
-###rEDM
-This is the folder in which R code and plots using the rEDM package are located.
+#Project structure
+The project is split by folders into logical threads of work. Each folder represents a contingent body of work or a result of such work. Analysis folders and ploting folders are separated. The following is a short description of each folder:
 
-###mCCR
-This is the folder in which R code and plots using the multispatialCCM package are located. Since this package is relatively old, it might be outdated, and therefore it is no longer in development and should be ignored.
-
-###CA
-The CA directory is a python object that contains classes for simulating Cellular Automata. The cellular automata is a side project that might be interesting, but for now it is not used.
-
-###Simple plots
-This is a directory that contains a couple of simple plots and the 
-
+- App: contains scripts to run a Shiny app that shows the final output
+- causality plots: contains plots that represent simple causality plots between a given pair
+- for channels: constains scripts specifically for dealing with causality between channels. 
+- for regions: contains scripts specifically for dealing with causality between regions.
+- lag plots: contains plots that show the laged causality between two pairs
+- network plots: contains sample plots used in paper for simple graph results
+- signficiant causality plots: contains overlayed causality plots that represent the significance of the causality detected.
+- simple plots: contains simple ad-hoc plots produced for a paper or presentation

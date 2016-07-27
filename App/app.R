@@ -15,7 +15,7 @@ ui <- fluidPage(
   #slider that controls which data frame to show
   sliderInput(inputId = "time", label="Choose a time segment",
     value = range(start.times)[1], min = range(start.times)[1], max = range(start.times)[2],
-    step=2000, animate=animationOptions(interval=500)),
+    step=2000, animate=animationOptions(interval=250)),
   #the main pannel where the graph plot is
   mainPanel(plotOutput(outputId = "main.plot")),
   #a sidebar with descriptions of the nodes and their meanings
