@@ -1,14 +1,16 @@
 library(shiny)
 library(igraph)
+library(shape)
 
 #get the data
 setwd("~/Desktop/SIP/Code/App")
+
+
+#get the data and determine the time.step between analysis
 pair.causality.CSD.data <- dget("pairwise.causality.regional.CSD.data.RData")
-
-pair.causality.CSD.data$to <- pair.causality.CSD.data$to-1
-pair.causality.CSD.data$from <- pair.causality.CSD.data$from - 1
-
 time.step <- unique(pair.causality.CSD.data$start.time)[2] - unique(pair.causality.CSD.data$start.time)[1]
+
+
 ui <- fluidPage(
   
   #slider that controls the threshold to show
