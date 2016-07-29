@@ -3,6 +3,8 @@
 #expectes a N x 4 x 8 array, where N is the number of data points collected and 4 x 8 is the
 #dimensions in regards to the spatial coordinates
 #time points is a matrix of time point indecies that will make the first column of the returned data frame
+#MUST IMPORT EstCSD DATA FROM kamal_data3.h5 from https://drive.google.com/open?id=0BzyCB-i-aKDWTDJCYUdQYkxRRHM
+#MUST ALSO IMPORT neural_data.txt from https://drive.google.com/open?id=0BzyCB-i-aKDWUElKWVd0OWc5OWM
 melt_CSD <- function(CSD, time_points)
 {
   result <- time_points
