@@ -5,6 +5,24 @@
 #time points is a matrix of time point indecies that will make the first column of the returned data frame
 #MUST IMPORT EstCSD DATA FROM kamal_data3.h5 from https://drive.google.com/open?id=0BzyCB-i-aKDWTDJCYUdQYkxRRHM
 #MUST ALSO IMPORT neural_data.txt from https://drive.google.com/open?id=0BzyCB-i-aKDWUElKWVd0OWc5OWM
+# library(rhdf5)
+# setwd("~/Desktop/SIP/Code/App") # must set the working directory to the current one
+# EstCSD<-h5read('kamal_data3.h5', '/est_csd')
+# EstPot<-h5read('kamal_data3.h5', '/est_pot')
+# SpaceX<-c(h5read('kamal_data3.h5', '/space_X'))
+# SpaceY<-c(h5read('kamal_data3.h5', '/space_Y'))
+# KCSDPar<-h5read('kamal_data3.h5', '/kcsd_result')
+# pots <- h5read('kamal_data3.h5', '/pots')
+# H5close()
+# Zlim<-range(EstCSD)
+
+# for(i in 1:length(EstPot[,1,1])){
+#   image(unique(SpaceX)*1000, unique(SpaceY)*1000, t(data.matrix(EstCSD[i,,])), col=rainbow(200),zlim=Zlim)
+#   Sys.sleep(0.25)
+# }
+
+
+
 melt_CSD <- function(CSD, time_points)
 {
   result <- time_points
