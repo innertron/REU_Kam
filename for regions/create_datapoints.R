@@ -1,10 +1,11 @@
 #This script creates data points of each time step. Each data point contains as features the
 #strength of edges (causality measure) between each pair of regions.
 library(parallel)
-getDataPoint <- function(strt.tim)
+
+getDataPoint <- function(data, strt.tim)
 {
-  froms <- unique(pairwise.causality.data$from)
-  tos <- unique(pairwise.causality.data$to)
+  froms <- unique(data$from)
+  tos <- unique(data$to)
   
   node.range <- range(froms)[1]:range(tos)[2]
   
@@ -13,8 +14,8 @@ getDataPoint <- function(strt.tim)
   {
     for (j in node.range[-i+1])
     {
-      rho <- unlist(subset(pairwise.causality.data, select=rho, from==i & to==j & start.time==strt.tim,
-        drop=T))
+      rho <- unlist(subset(data, select=rho, from==i & to==j 
+        & start.time==strt.tim & time.window==window & time.step==step, drop=T))
       d <- cbind(d, rho)
     }
   }
@@ -22,8 +23,8 @@ getDataPoint <- function(strt.tim)
   d
 }
 
-
-causality.graph.data <- t(mcmapply(getDataPoint, unique(pairwise.causality.data$start.time)))
+data <- subset(pair.causality.CSD.data, time.window==200 & time.step==50)
+causality.graph.data <- t(mcmapply(getDataPoint, data, unique(data$start.time)))
 
 
 for (index in 1:length(causality.graph.data[,1]))

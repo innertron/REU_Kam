@@ -5,9 +5,9 @@
 #Import the rEDM library
 library(rEDM)
 #get the first second of the data
-nd <- CSD[1:1000,]
-lib <- c(1, length(nd))
-pred <- c(1, length(nd))
+nd <- CSD[1:200,]
+lib <- c(1, length(CSD))
+pred <- c(1, length(CSD))
 
 #whether to save the plots or simply output them right away
 save_file <- "~/Desktop/SIP/Code/rEDM/causality plots/second 0-1/"
