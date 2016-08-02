@@ -40,14 +40,14 @@ calculate_pairwise_causality_CSD_full_experiment <- function(time.window=2000, t
     print(paste("finished", i, j, "for start time", start.time))
     #return a data frame row
     c(to=j, from=i, rho=max(0,ch2_map_1_mean$rho),
-      start.time=start.time, time.window=time.window)
+      start.time=start.time, time.window=time.window, time.step = time.step)
   }
   
   
   #make a cluster to allow parallelization of the computation
   cl<-makeCluster(detectCores(), type="SOCK", outfile="")
   #export some values to each cluster instead of passing these values to the function
-  clusterExport(cl, c("time.window"), envir= environment())
+  clusterExport(cl, c("time.window", "time.step"), envir= environment())
   clusterExport(cl, c("regional_EstCSD", 'simplex', 'ccm', 'ccm_means', 'make_surrogate_data'))
   
   #get start times with making sure to keep it in bound of the time step
@@ -68,7 +68,8 @@ calculate_pairwise_causality_CSD_full_experiment <- function(time.window=2000, t
   pair.causality.data
 }
 
-pairwise.causality.CSD.data <- calculate_pairwise_causality_CSD_full_experiment(time.window = 2000, time.step=250)
+new_d <- calculate_pairwise_causality_CSD_full_experiment(time.window = 200, time.step=50)
+pairwise.causality.CSD.data <- rbind(pairwise.causality.CSD.data, new_d)
 
 #store the data in a file
 dput(pairwise.causality.CSD.data, "~/pairwise.causality.regional.CSD.data.RData")
