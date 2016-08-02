@@ -4,6 +4,7 @@
 
 #Import the rEDM library
 library(rEDM)
+# pair.causality.CSD.data <- dget("...")
 #get the first second of the data
 nd <- CSD[1:1000,]
 lib <- c(1, length(nd))
@@ -69,31 +70,51 @@ lines(ch2_map_1_mean$lib_size, ch2_map_1_mean$rho - ch2_map_1_mean$sd.rho, col =
 #PLOT HISTOGRAM CAUSALITY STRENGTH ACROSS EXPERIMENT
 combinations <- t(combn(1:12, 2))
 combinations <- (cbind(c(combinations[,1], combinations[,2]), c(combinations[,2], combinations[,1])))
-pair.diff <- rbind(unlist(mapply(function(i,j) { 
-  time.step = 200
+rhos <- rbind(unlist(mapply(function(i,j) { 
+  time.step = 50
   time.window = 200
   i.to.j <- unlist(subset(pair.causality.CSD.data, time.step == time.step &
       time.window == time.window & from==i & to==j, drop=T, select=rho))
   # print(paste("finished for start time ", start.time))
   i.to.j
 }, combinations[,1], combinations[,2])))
-hist(pair.diff, main="", xlab=expression(paste("Causality strength ", rho)))
+hist(rhos, main="", xlab=expression(paste("Causality strength ", rho)))
+
+
 
 #PLOT CAUSALITY BETWEEN PAIRS DIFFERENCE HISTOGRAM
 combinations <- t(combn(1:12, 2))
 start.times.array <- rep(unique(pair.causality.CSD.data$start.time), each=length(combinations[,1]))
-pair.diff <- rbind(unlist(mapply(function(i,j) { 
-  time.step = 200
-  time.window = 200
-  i.to.j <- unlist(subset(pair.causality.CSD.data, time.step == time.step &
-      time.window == time.window & from==i & to==j, drop=T, select=rho))
-  j.to.i <- unlist(subset(pair.causality.CSD.data, time.step == time.step &
-      time.window == time.window & from==j & to==i, drop=T, select=rho))
-  # print(paste("finished for start time ", start.time))
-  abs(i.to.j - j.to.i)
+pair.diff.all <- c(unlist(mapply(function(i,j) { 
+  step = 50
+  window = 200
+  i.to.j <- unlist(subset(pair.causality.CSD.data, time.step == step &
+      time.window == window & from==i & to==j, drop=T, select=rho))
+  j.to.i <- unlist(subset(pair.causality.CSD.data, time.step == step &
+      time.window == window & from==j & to==i, drop=T, select=rho))
+  abs(i.to.j - j.to.i)  
   }, combinations[,1], combinations[,2])))
-hist(pair.diff, 
-  xlab=expression(paste("Absolute difference in causation measure ", rho)))
+hist(pair.diff, main = "", xlab=expression(paste("Absolute difference in causation measure ", rho)))
 
 
+
+
+#PLOT CAUSALITY BETWEEN PAIRS DIFFERENCE HISTOGRAM WITHOUT THOSE BELOW 0.2
+combinations <- t(combn(1:12, 2))
+start.times.array <- rep(unique(pair.causality.CSD.data$start.time), each=length(combinations[,1]))
+pair.diff.some <- c(unlist(mapply(function(i,j) { 
+  step = 50
+  window = 200
+  i.to.j <- unlist(subset(pair.causality.CSD.data, time.step == step &
+      time.window == window & from==i & to==j, drop=T, select=rho))
+  j.to.i <- unlist(subset(pair.causality.CSD.data, time.step == step &
+      time.window == window & from==j & to==i, drop=T, select=rho))
+  
+  nas <- i.to.j < 0.2 | j.to.i < 0.2
+  
+  if(is.na(sum(nas))) abs(i.to.j - j.to.i) else abs(i.to.j[!nas] - j.to.i[!nas])
+  
+}, combinations[,1], combinations[,2])))
+options(scipen=10)
+hist(pair.diff.some, main = "", xlab=expression(paste("Absolute difference in causation measure ", rho)))
 #PLOT 
