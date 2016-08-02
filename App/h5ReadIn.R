@@ -1,5 +1,5 @@
 library(rhdf5)
-# setwd("~/") must set the working directory to the current one
+ setwd("~/Desktop/SIP/Code/App") # must set the working directory to the current one
 EstCSD<-h5read('kamal_data3.h5', '/est_csd')
 EstPot<-h5read('kamal_data3.h5', '/est_pot')
 SpaceX<-c(h5read('kamal_data3.h5', '/space_X'))

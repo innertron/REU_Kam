@@ -3,7 +3,7 @@ library(igraph)
 library(shape)
 
 #get the data
-setwd("~/Desktop/SIP/Code/App")
+# setwd("~/Desktop/SIP/Code/App")
 
 
 #get the data and determine the time.step between analysis
